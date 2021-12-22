@@ -2,11 +2,8 @@ import { useContext } from "react";
 import { EmployeesContext } from "../../EmployeesContext";
 import { Container } from "./styles";
 
-
-
-
 export function EmployeeTable() {
-  const { employees } = useContext(EmployeesContext)
+  const { employees } = useContext(EmployeesContext);
 
   return (
     <Container>
@@ -28,9 +25,11 @@ export function EmployeeTable() {
               <td>{employee.CPF}</td>
               <td>{employee.status}</td>
               <td>{employee.job}</td>
-              <td>{new Intl.DateTimeFormat('pt-BR').format(
-                new Date(employee.createdAt)
-              )}</td>
+              <td>
+                {new Intl.DateTimeFormat("pt-BR").format(
+                  new Date(employee.createdAt)
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

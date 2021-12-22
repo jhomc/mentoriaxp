@@ -10,6 +10,15 @@ interface Employee {
   CPF: string;
   status: string;
   job: string;
+  birthDate: string;
+  email: string;
+  CEP: string;
+  street: string;
+  neighborhood: string;
+  city: string;
+  province: string;
+  salary: string;
+  boss: string;
   createdAt: string;
 }
 
@@ -21,7 +30,7 @@ interface EmployeeProviderProps {
 
 interface EmployeeContextData {
   employees: Employee[];
-  createEmployee: (employee: EmployeeInput) => void;
+  createEmployee: (employee: EmployeeInput) => Promise<void>;
 }
 
 export const EmployeesContext = createContext<EmployeeContextData>(
@@ -35,8 +44,17 @@ export function EmployeesProvider({ children }: EmployeeProviderProps) {
     api.get("/employees").then((response) => setEmployees(response.data.employees));
   }, []);
 
-  function createEmployee(employee: EmployeeInput) {
-    api.post('employees', employee)
+ async function createEmployee(employeeInput: EmployeeInput) {
+    const response = await api.post('employees', {
+      ...employeeInput,
+      createdAt: new Date()
+    })
+    const { employee } = response.data
+
+    setEmployees([
+      ...employees,
+      employee,
+    ])
   }
 
   return(
