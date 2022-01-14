@@ -1,9 +1,18 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { IconContext } from "react-icons";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { EmployeesContext } from "../../EmployeesContext";
 import { Container } from "./styles";
 
-export function EmployeeTable() {
-  const { employees } = useContext(EmployeesContext);
+
+interface EmployeeTableProps {
+  onOpenUpdateEmployeeModal: () => void;
+  
+}
+
+export function EmployeeTable({onOpenUpdateEmployeeModal}: EmployeeTableProps) {
+  const { employees, deleteEmployee} = useContext(EmployeesContext);
+
 
   return (
     <Container>
@@ -15,6 +24,7 @@ export function EmployeeTable() {
             <th>Status</th>
             <th>Cargo</th>
             <th>Data de início</th>
+            <th>Ações</th>
           </tr>
         </thead>
 
@@ -30,6 +40,26 @@ export function EmployeeTable() {
                   new Date(employee.createdAt)
                 )}
               </td>
+              <td>
+                <div>
+                  <button onClick={() => deleteEmployee(employee.id)}>
+                    <IconContext.Provider
+                      value={{ color: "var(--text-body)", size: "1.25rem" }}
+                    >
+                      <AiFillDelete />
+                    </IconContext.Provider>
+                  </button>
+                  <button onClick={ 
+                    onOpenUpdateEmployeeModal
+                  }>
+                    <IconContext.Provider
+                      value={{ color: "var(--text-body)", size: "1.25rem" }}
+                    >
+                      <AiFillEdit />
+                    </IconContext.Provider>
+                  </button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -37,5 +67,3 @@ export function EmployeeTable() {
     </Container>
   );
 }
-
-export default EmployeeTable;

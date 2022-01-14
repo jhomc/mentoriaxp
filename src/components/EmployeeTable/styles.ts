@@ -21,9 +21,20 @@ export const Container = styled.div`
       background: var(--shape);
       color: var(--text-body);
       font-size: 0.95rem;
+      margin-top: auto;
 
       &:first-child {
         color: var(--gray);
+      }
+      
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        button {
+          border: 0;
+        }
       }
     }
   }

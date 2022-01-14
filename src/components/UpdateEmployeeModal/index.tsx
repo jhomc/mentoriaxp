@@ -4,40 +4,65 @@ import { ButtonContainer, Container, SimpleGrid } from "./styles";
 import { RiCloseLine } from "react-icons/ri";
 import { IconContext } from "react-icons";
 import { FormEvent, useContext, useState } from "react";
-import { api } from "../../services/api";
 import { EmployeesContext } from "../../EmployeesContext";
 
-interface NewEmployeeModalProps {
+
+interface Employee {
+  id: number;
+  name: string;
+  CPF: string;
+  status: string;
+  job: string;
+  birthDate: string;
+  email: string;
+  CEP: string;
+  street: string;
+  neighborhood: string;
+  city: string;
+  province: string;
+  salary: string;
+  boss: string;
+  phone: string;
+  addressNumber: string;
+  createdAt: string;
+}
+
+
+interface UpdateEmployeeModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-export function NewEmployeeModal({
+export function UpdateEmployeeModal({
   isOpen,
   onRequestClose,
-}: NewEmployeeModalProps) {
-  const { createEmployee } = useContext(EmployeesContext);
+}: UpdateEmployeeModalProps) {
+  const { employees, handleUpdateEmployee } = useContext(EmployeesContext);
 
-  const [name, setName] = useState("");
-  const [CPF, setCPF] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [status, setStatus] = useState("");
-  const [CEP, setCEP] = useState("");
-  const [street, setStreet] = useState("");
-  const [addressNumber, setAdressNumber] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [city, setCity] = useState("");
-  const [province, setProvince] = useState("");
-  const [job, setJob] = useState("");
-  const [salary, setSalary] = useState("");
-  const [boss, setBoss] = useState("");
+  
 
-  async function handleEmployeeRegister(event: FormEvent) {
+  const [name, setName] = useState('');
+  const [CPF, setCPF] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [status, setStatus] = useState('');
+  const [CEP, setCEP] = useState('');
+  const [street, setStreet] = useState('');
+  const [addressNumber, setAddressNumber] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [city, setCity] = useState('');
+  const [province, setProvince] = useState('');
+  const [job, setJob] = useState('');
+  const [salary, setSalary] = useState('');
+  const [boss, setBoss] = useState('');
+
+
+
+  async function handleEmployeeUpdate(event: FormEvent) {
     event.preventDefault();
 
-    await createEmployee({
+    await handleUpdateEmployee({
       name,
       job,
       status,
@@ -52,19 +77,19 @@ export function NewEmployeeModal({
       salary,
       boss,
       phone,
-      addressNumber
+      addressNumber,
     });
 
     setName('');
     setCPF('');
     setBirthDate('');
-    setAdressNumber('');
+    setAddressNumber('');
     setEmail('');
     setPhone('');
     setStatus('');
     setCEP('');
     setStreet('');
-    setAdressNumber('');
+    setAddressNumber('');
     setNeighborhood('');
     setCity('');
     setProvince('');
@@ -75,6 +100,8 @@ export function NewEmployeeModal({
     onRequestClose();
   }
 
+  
+
   return (
     <Modal
       isOpen={isOpen}
@@ -82,7 +109,7 @@ export function NewEmployeeModal({
       overlayClassName="react-modal-overlay"
       className="react-modal-content"
     >
-      <Container onSubmit={handleEmployeeRegister}>
+      <Container onSubmit={handleEmployeeUpdate}>
         <h2>Cadastrar Funcionário</h2>
         <button type="button" onClick={onRequestClose} className="close-modal">
           <IconContext.Provider
@@ -147,7 +174,7 @@ export function NewEmployeeModal({
             placeholder="Número"
             type="text"
             value={addressNumber}
-            onChange={(event) => setAdressNumber(event.target.value)}
+            onChange={(event) => setAddressNumber(event.target.value)}
           />
           <input
             placeholder="Bairro"
