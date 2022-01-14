@@ -35,13 +35,6 @@ const Home: NextPage = () => {
   const [isUpdateEmployeeModalOpen, setIsUpdateEmployeeModalOpen] = useState(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [editingEmployee, setEditingEmployee] = useState<Employee>({} as Employee)
-  
-
-  useEffect(() => {
-    api
-      .get("/employees")
-      .then((response) => setEmployees(response.data.employees));
-  }, []);
 
   function handleOpenNewEmployeeModal() {
     setIsNewEmployeeModalOpen(true);

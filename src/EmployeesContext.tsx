@@ -21,7 +21,7 @@ interface Employee {
   createdAt: string;
 }
 
-interface EmployeeInput  {
+interface EmployeeInput {
   name: string;
   CPF: string;
   status: string;
@@ -37,7 +37,6 @@ interface EmployeeInput  {
   boss: string;
   phone: string;
   addressNumber: string;
-  
 }
 
 interface EmployeeProviderProps {
@@ -48,7 +47,7 @@ interface EmployeeContextData {
   employees: Employee[];
   createEmployee: (employee: EmployeeInput) => Promise<void>;
   deleteEmployee: (id: Number) => Promise<void>;
-  handleUpdateEmployee:(employee: EmployeeInput) => Promise<void>;
+  handleUpdateEmployee: (employee: EmployeeInput) => Promise<void>;
 }
 
 export const EmployeesContext = createContext<EmployeeContextData>(
@@ -57,13 +56,15 @@ export const EmployeesContext = createContext<EmployeeContextData>(
 
 export function EmployeesProvider({ children }: EmployeeProviderProps) {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [editEmployee, setEditEmployee] = useState<Employee>({} as Employee)
-  const [isUpdateEmployeeModalOpen, setIsUpdateEmployeeModalOpen] = useState(false);
+  const [editEmployee, setEditEmployee] = useState<Employee>({} as Employee);
+  const [isUpdateEmployeeModalOpen, setIsUpdateEmployeeModalOpen] =
+    useState(false);
 
   useEffect(() => {
-    api
-      .get("/employees")
-      .then((response) => setEmployees(response.data.employees));
+    (async () => {
+      const { data } = await api.get("/employees");
+      setEmployees(data.employees);
+    })();
   }, []);
 
   async function createEmployee(employeeInput: EmployeeInput) {
@@ -76,7 +77,9 @@ export function EmployeesProvider({ children }: EmployeeProviderProps) {
     setEmployees([...employees, employee]);
   }
 
-  async function handleUpdateEmployee(employeeInput: EmployeeInput): Promise<void> {
+  async function handleUpdateEmployee(
+    employeeInput: EmployeeInput
+  ): Promise<void> {
     try {
       const employeeUpdated = await api.put(`employees/${editEmployee.id}`, {
         ...editEmployee,
@@ -84,28 +87,26 @@ export function EmployeesProvider({ children }: EmployeeProviderProps) {
       });
 
       const employeesUpdated = employees.map((e) => {
-        e.id !== employeeUpdated.data.id
-      })
+        e.id !== employeeUpdated.data.id;
+      });
 
-      setEmployees(employeesUpdated as any)
-    }  catch (err) {
+      setEmployees(employeesUpdated as any);
+    } catch (err) {
       console.log(err);
     }
   }
 
   function handleOpenUpdateEmployeeModal(employee: Employee) {
-    setEditEmployee(employee)
+    setEditEmployee(employee);
     setIsUpdateEmployeeModalOpen(true);
   }
 
   function setEditingEmployee() {
-    const editingEmployee = employees.find(e => e.id === editEmployee.id);
+    const editingEmployee = employees.find((e) => e.id === editEmployee.id);
 
-    setIsUpdateEmployeeModalOpen(true)
-    return (editingEmployee
-      );
+    setIsUpdateEmployeeModalOpen(true);
+    return editingEmployee;
   }
-  
 
   async function deleteEmployee(id: Number) {
     try {
@@ -119,7 +120,12 @@ export function EmployeesProvider({ children }: EmployeeProviderProps) {
 
   return (
     <EmployeesContext.Provider
-      value={{ employees, createEmployee, deleteEmployee, handleUpdateEmployee,}}
+      value={{
+        employees,
+        createEmployee,
+        deleteEmployee,
+        handleUpdateEmployee,
+      }}
     >
       {children}
     </EmployeesContext.Provider>
