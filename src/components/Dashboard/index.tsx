@@ -5,7 +5,7 @@ import { Summary } from '../Summary';
 import { Container } from './styles';
 
 interface DashboardProps {
-  onOpenUpdateEmployeeModal: () => void;
+  onOpenUpdateEmployeeModal: (employeeId: number) => void;
   
 }
 

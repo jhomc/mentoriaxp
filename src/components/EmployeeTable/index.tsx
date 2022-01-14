@@ -6,7 +6,7 @@ import { Container } from "./styles";
 
 
 interface EmployeeTableProps {
-  onOpenUpdateEmployeeModal: () => void;
+  onOpenUpdateEmployeeModal: (employeeId: number) => void;
   
 }
 
@@ -50,7 +50,7 @@ export function EmployeeTable({onOpenUpdateEmployeeModal}: EmployeeTableProps) {
                     </IconContext.Provider>
                   </button>
                   <button onClick={ 
-                    onOpenUpdateEmployeeModal
+                    () => onOpenUpdateEmployeeModal(employee.id)
                   }>
                     <IconContext.Provider
                       value={{ color: "var(--text-body)", size: "1.25rem" }}

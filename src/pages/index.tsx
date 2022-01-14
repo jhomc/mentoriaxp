@@ -34,7 +34,14 @@ const Home: NextPage = () => {
   const [isNewEmployeeModalOpen, setIsNewEmployeeModalOpen] = useState(false);
   const [isUpdateEmployeeModalOpen, setIsUpdateEmployeeModalOpen] = useState(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [editingEmployee, setEditingEmployee] = useState<Employee>({} as Employee)
+  const [editingEmployee, setEditingEmployee] = useState({})
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await api.get("/employees");
+      setEmployees(data.employees);
+    })();
+  }, []);
 
   function handleOpenNewEmployeeModal() {
     setIsNewEmployeeModalOpen(true);
@@ -44,7 +51,8 @@ const Home: NextPage = () => {
     setIsNewEmployeeModalOpen(false);
   }
 
-  function handleOpenUpdateEmployeeModal() {
+  function handleOpenUpdateEmployeeModal(employeeId: number) {
+    setEditingEmployee(employeeId); //ou use uma variavel de contexto se nao quiser passar como props para UpdateEmployeeModal 
     setIsUpdateEmployeeModalOpen(true);
   }
 

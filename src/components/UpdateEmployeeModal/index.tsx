@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { ButtonContainer, Container, SimpleGrid } from "./styles";
 import { RiCloseLine } from "react-icons/ri";
 import { IconContext } from "react-icons";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { EmployeesContext } from "../../EmployeesContext";
 
 
@@ -33,11 +33,13 @@ interface UpdateEmployeeModalProps {
   onRequestClose: () => void;
 }
 
+
 export function UpdateEmployeeModal({
   isOpen,
   onRequestClose,
 }: UpdateEmployeeModalProps) {
   const { employees, handleUpdateEmployee } = useContext(EmployeesContext);
+  const [selectedEmployee, setSelectedEmployee] = useState({})
 
   
 
@@ -57,7 +59,13 @@ export function UpdateEmployeeModal({
   const [salary, setSalary] = useState('');
   const [boss, setBoss] = useState('');
 
+  useEffect(() => {
+    const employeeData = employees.find(employee => employee.id === selectedEmployee) || {};
 
+    setSelectedEmployee(employeeData)
+    console.log(employeeData)
+  }, []);
+  
 
   async function handleEmployeeUpdate(event: FormEvent) {
     event.preventDefault();
